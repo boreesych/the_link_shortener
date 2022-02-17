@@ -17,7 +17,7 @@ def get_url():
     link = URL_map.query.filter_by(short=link_id).first()
     if link:
         return jsonify({'url': link.original}), 200
-    raise Invalid_API_usage("Факт с указанным id не найден", status_code=404)
+    raise Invalid_API_usage('Факт с указанным id не найден', status_code=404)
 
 
 @app.route('/api/create_link/', methods=['POST'])
@@ -29,7 +29,7 @@ def create_id():
     short_id = request.json.get('link_id')
 
     if short_id and re.search(r'[^a-zA-Z0-9]', short_id):
-        raise Invalid_API_usage("Указано недопустимое имя для короткой ссылки")
+        raise Invalid_API_usage('Указано недопустимое имя для короткой ссылки')
 
     if short_id and URL_map.query.filter_by(short=short_id).first() is not None:
         message = f'Имя "{short_id}" уже занято.'
