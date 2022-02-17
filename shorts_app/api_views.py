@@ -1,0 +1,50 @@
+import re
+from datetime import datetime
+
+from flask import abort, jsonify, make_response, request, url_for
+
+from shorts_app import app, db
+from shorts_app.error_handlers import Invalid_API_usage
+from shorts_app.models import URL_map
+from shorts_app.views import get_unique_short_id
+
+
+@app.route('/api/get_url/', methods=['GET'])
+def get_url():
+    if not request.json:
+        raise Invalid_API_usage('Error')
+    link_id = request.json.get('link_id')
+    link = URL_map.query.filter_by(short=link_id).first()
+    if link:
+        return jsonify({'url': link.original}), 200
+    raise Invalid_API_usage("Факт с указанным id не найден", status_code=404)
+
+
+@app.route('/api/create_link/', methods=['POST'])
+def create_id():
+    if not request.json:
+        raise Invalid_API_usage('Error')
+
+    url = request.json.get('url')
+    short_id = request.json.get('link_id')
+
+    if short_id and re.search(r'[^a-zA-Z0-9]', short_id):
+        raise Invalid_API_usage("Указано недопустимое имя для короткой ссылки")
+
+    if short_id and URL_map.query.filter_by(short=short_id).first() is not None:
+        message = f'Имя "{short_id}" уже занято.'
+        raise Invalid_API_usage(message)
+
+    if url is None:
+        message = '"url" является обязательным полем!'
+        raise Invalid_API_usage(message)
+
+    if short_id is None or short_id == '':
+        short_id = get_unique_short_id()
+
+    new_link = URL_map(original=url, short=short_id, timestamp=datetime.now())
+    db.session.add(new_link)
+    db.session.commit()
+    short_url = url_for('index', _external=True, _scheme='https') + short_id
+
+    return jsonify({'url': url, 'link_id': short_url}), 201
