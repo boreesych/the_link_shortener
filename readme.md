@@ -37,6 +37,12 @@ FLASK_APP=shorts_app
 FLASK_ENV=development
 ```
 
+Создать базу данных и применить миграции:
+
+```
+flask db upgrade
+```
+
 Запустить проект:
 
 ```
