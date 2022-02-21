@@ -14,16 +14,16 @@ def get_url(short_id):
     link = URL_map.query.filter_by(short=short_id).first()
     if link:
         return jsonify({'url': link.original}), 200
-    raise Invalid_API_usage('Факт с указанным id не найден', status_code=404)
+    raise Invalid_API_usage('Указанный id не найден', status_code=404)
 
 
 @app.route('/api/id/', methods=['POST'])
 def create_id():
     if not request.json:
-        raise Invalid_API_usage('Error')
+        raise Invalid_API_usage('Отсутствует тело запроса')
 
     url = request.json.get('url')
-    short_id = request.json.get('link_id')
+    short_id = request.json.get('custom_id')
 
     if short_id and re.search(r'[^a-zA-Z0-9]', short_id):
         raise Invalid_API_usage('Указано недопустимое имя для короткой ссылки')
@@ -44,4 +44,4 @@ def create_id():
     db.session.commit()
     short_url = url_for('index', _external=True) + short_id
 
-    return jsonify({'url': url, 'link_id': short_url}), 201
+    return jsonify({'url': url, 'short_link': short_url}), 201
