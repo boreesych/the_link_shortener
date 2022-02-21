@@ -39,7 +39,8 @@ def index():
         url = form.original_link.data
         short_id = form.custom_id.data
 
-        if short_id and URL_map.query.filter_by(short=short_id).first() is not None:
+        if (short_id 
+            and URL_map.query.filter_by(short=short_id).first() is not None):
             flash(f'Имя {short_id} уже занято!')
             return redirect(url_for('index'))
 
@@ -50,7 +51,6 @@ def index():
                            timestamp=datetime.now())
         db.session.add(new_link)
         db.session.commit()
-        # short_url = url_for('index', _external=True, _scheme='https') + short_id
         short_url = url_for('index', _external=True) + short_id
 
         return render_template('index.html', form=form, short_url=short_url)
@@ -62,5 +62,4 @@ def redirect_url(short_id):
     link = URL_map.query.filter_by(short=short_id).first()
     if link:
         return redirect(link.original)
-    else:
-        abort(404)
+    abort(404)

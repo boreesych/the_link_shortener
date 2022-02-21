@@ -9,18 +9,15 @@ from shorts_app.models import URL_map
 from shorts_app.views import get_unique_short_id
 
 
-@app.route('/api/get_url/', methods=['GET'])
-def get_url():
-    if not request.json:
-        raise Invalid_API_usage('Error')
-    link_id = request.json.get('link_id')
-    link = URL_map.query.filter_by(short=link_id).first()
+@app.route('/api/id/<short_id>/', methods=['GET'])
+def get_url(short_id):
+    link = URL_map.query.filter_by(short=short_id).first()
     if link:
         return jsonify({'url': link.original}), 200
     raise Invalid_API_usage('Факт с указанным id не найден', status_code=404)
 
 
-@app.route('/api/create_link/', methods=['POST'])
+@app.route('/api/id/', methods=['POST'])
 def create_id():
     if not request.json:
         raise Invalid_API_usage('Error')
@@ -45,6 +42,6 @@ def create_id():
     new_link = URL_map(original=url, short=short_id, timestamp=datetime.now())
     db.session.add(new_link)
     db.session.commit()
-    short_url = url_for('index', _external=True, _scheme='https') + short_id
+    short_url = url_for('index', _external=True) + short_id
 
     return jsonify({'url': url, 'link_id': short_url}), 201
