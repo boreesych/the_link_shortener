@@ -30,11 +30,12 @@ python3 -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Создать в директории проекта файл .env с двумя переменными окружения:
+Создать в директории проекта файл .env с тремя переменными окружения:
 
 ```
 FLASK_APP=shorts_app
 FLASK_ENV=development
+SECRET_KEY=your_secret_key
 ```
 
 Создать базу данных и применить миграции:
