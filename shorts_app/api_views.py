@@ -1,7 +1,8 @@
+from pprint import pprint as pp
 import re
 from datetime import datetime
 
-from flask import abort, jsonify, make_response, request, url_for
+from flask import jsonify, request, url_for
 
 from shorts_app import app, db
 from shorts_app.error_handlers import Invalid_API_usage
@@ -23,13 +24,13 @@ def create_id():
         raise Invalid_API_usage('Отсутствует тело запроса')
 
     url = request.json.get('url')
-    short_id = request.json.get('custom_id')
+    short_id = request.json.get('short_link') # FIXME: нет такого поля как custom_id
 
     if short_id and re.search(r'[^a-zA-Z0-9]', short_id):
         raise Invalid_API_usage('Указано недопустимое имя для короткой ссылки')
 
     if short_id and URL_map.query.filter_by(short=short_id).first() is not None:
-        message = f'Имя "{short_id}" уже занято.'
+        message = f'Имя "{short_id}" уже занято.'  # FIXME: такого ответа нет в спеке
         raise Invalid_API_usage(message)
 
     if url is None:

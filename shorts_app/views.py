@@ -1,24 +1,22 @@
-import re
 import string
 from datetime import datetime
 from random import choice
 
 from flask import abort, flash, redirect, render_template, url_for
-from flask.helpers import get_flashed_messages
 
 from shorts_app import ID_LENGHT, app, db
 from shorts_app.forms import LinkForm
 from shorts_app.models import URL_map
 
-from . import error_handlers
-
 
 def get_short_id(number):
     generated_id = [
         choice(
-            string.ascii_lowercase + 
-            string.ascii_uppercase + 
-            string.digits) for _ in range(number)]
+            string.ascii_lowercase +
+            string.ascii_uppercase +
+            string.digits
+        ) for _ in range(number)
+    ]
     result = ''.join(generated_id)
     return result
 
