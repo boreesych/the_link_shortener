@@ -20,6 +20,7 @@ def get_short_id(number):
     result = ''.join(generated_id)
     return result
 
+
 def get_unique_short_id():
     unique_id = False
     while not unique_id:
@@ -29,16 +30,14 @@ def get_unique_short_id():
     return new_id
 
 
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = LinkForm()
     if form.validate_on_submit():
         url = form.original_link.data
-        short_id = form.custom_id.data
+        short_id = form.custom_id.data  # FIXME: еще раз custom_id
 
-        if (short_id 
-            and URL_map.query.filter_by(short=short_id).first() is not None):
+        if (short_id and URL_map.query.filter_by(short=short_id).first() is not None):
             flash(f'Имя {short_id} уже занято!')
             return redirect(url_for('index'))
 

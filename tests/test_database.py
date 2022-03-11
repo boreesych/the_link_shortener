@@ -1,0 +1,15 @@
+from shorts_app import db
+from sqlalchemy import inspect
+from shorts_app.models import URL_map
+
+
+def test_fields(_app):
+    assert db.engine.table_names() == ['URL_map'], (
+        'Не обнаружена таблица URL_map'
+    )
+    inspector = inspect(URL_map)
+    fields =  [i.key for i in inspector.mapper.column_attrs]
+    assert all(field in ['id', 'original', 'short', 'timestamp'] for field in fields), (
+        'Не обнаружено необходимое количество полей в модели. '
+        'Необходимые поля: id, original, short, timestamp'
+    )
