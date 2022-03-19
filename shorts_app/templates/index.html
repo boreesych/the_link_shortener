@@ -2,44 +2,61 @@
 {% block title %} YaCut - укоротитель ссылок {% endblock %}
 {% block content %}
 
-<section class="u-align-center u-clearfix u-section-1" id="sec-3e75">
-    <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-      <h1 class="u-text u-text-default u-text-1">
-        <a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-base u-btn-1" href="{{ url_for('index')}}" data-page-id="23061640">
-        <span class="u-text-palette-2-base">Ya</span>Cut
-        </a>
-      </h1>
-    </div>
-  </section>
-  <section class="u-align-center u-clearfix u-section-2" id="sec-8ebd">
-    <div class="u-clearfix u-sheet u-sheet-1">
-      <p class="u-text u-text-default u-text-1">Создайте короткую ссылку автоматически или предложите свой вариант&nbsp;</p>
-      <div class="u-form u-form-1">
-        <form action="" method="POST" class="u-clearfix u-form-custom-backend u-form-spacing-10 u-form-vertical u-inner-form" name="form" style="padding: 10px;" novalidate>
-            {{ form.csrf_token }}
+  <main>   
+    <section class="container my-5 px-4">
+      <h1 class="text-center"><span style="color:red">Ya</span>Cut</h1>
+      <p class="text-center my-4">
+        Создайте короткую ссылку автоматически или предложите свой вариант
+      </p>
 
-          <div class="u-form-group u-form-name u-label-none">
-            {{ form.original_link(class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white u-input-1", autofocus="autofocus", placeholder=form.original_link.label.text) }}
+      <div class="container">
+        <div class="row my-3">
+          <div class="col-sm">
           </div>
-          <div class="u-form-group u-label-none u-form-group-2">
-            {{ form.custom_id(class="u-border-1 u-border-grey-30 u-input u-input-rectangle u-white u-input-2", placeholder=form.custom_id.label.text) }}
+          <div class="col-sm">
+            <form  action="" method="POST" novalidate>
+              {{ form.csrf_token }} 
+              <div> 
+                <div>
+                  {{ form.original_link(class="form-control form-control-lg py-2 mb-3", autofocus="autofocus", placeholder=form.original_link.label.text) }}
+                </div>
+                <div>
+                  {{ form.custom_id(class="form-control form-control-lg py-2 mb-3", placeholder=form.custom_id.label.text) }}
+                </div>
+                {{ form.submit(class="btn btn-primary") }}
+              </div>
+            </form>
           </div>
-          <div class="u-align-left u-form-group u-form-submit">
-            {{ form.submit(class="u-btn u-btn-submit u-button-style") }}
+          <div class="col-sm">
           </div>
-        </form>
+        </div>
       </div>
-      {% for field, error in form.errors.items() %}
-      <p class="u-text u-text-default u-text-1">{{ error[0] }}</p>
-      {% endfor %}
-        {% for message in get_flashed_messages() %}
-            <div class="u-text u-text-default u-text-2">{{ message }}</div>
-        {% endfor %}
-      {% if short_url %}
-      <p class="u-text u-text-default u-text-2">Ваша новая ссылка готова: <a href="{{ short_url }}" class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-base u-btn-2" target="_blank">{{ short_url }}</a>
-        {% endif %}
-    </p>
-    </div>
-  </section>
+
+      <div class="container">
+        <div class="row ">
+          <div class="col-sm">
+          </div>
+          <div class="col-sm">
+            <p class="text-center">
+              {% for field, error in form.errors.items() %}
+                <h5 class="text-center">{{ error[0] }}</h5>
+              {% endfor %}
+
+              {% for message in get_flashed_messages() %}
+                <h5 class="text-center">{{ message }}</h5>
+              {% endfor %}
+
+              {% if short_url %}
+                <h5 class="text-center">Ваша новая ссылка готова: <a href="{{ short_url }}" target="_blank">{{ short_url }}</a></h5>
+              {% endif %}
+            </p>
+          </div>
+          <div class="col-sm">
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
 
 {% endblock content %}
