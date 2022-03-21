@@ -21,9 +21,9 @@ Werkzeug = "==2.0.2"
 WTForms = "==3.0.1"
 pytest = "*"
 mixer = "*"
+flake8 = "*"
 
 [dev-packages]
-flake8 = "*"
 pytest-deadfixtures = "*"
 flake8-absolute-import = "*"
 flake8-bugbear = "*"
