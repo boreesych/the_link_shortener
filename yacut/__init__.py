@@ -12,4 +12,4 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from shorts_app import api_views, views
+from yacut import api_views, views
