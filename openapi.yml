@@ -74,7 +74,7 @@ components:
       properties:
         url:
           type: string
-        short_link:
+        custom_id:
           type: string
       type: object
       required:
