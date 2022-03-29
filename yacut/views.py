@@ -35,7 +35,7 @@ def index():
     form = LinkForm()
     if form.validate_on_submit():
         url = form.original_link.data
-        short_id = form.custom_id.data  # FIXME: еще раз custom_id
+        short_id = form.custom_id.data
 
         if (short_id and URL_map.query.filter_by(short=short_id).first() is not None):
             flash(f'Имя {short_id} уже занято!')
