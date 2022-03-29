@@ -1,4 +1,4 @@
-from shorts_app.models import URL_map
+from yacut.models import URL_map
 
 
 def test_index_form_get(client):

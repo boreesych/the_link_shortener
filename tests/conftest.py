@@ -1,12 +1,18 @@
 import os
+import sys
 import tempfile
+from pathlib import Path
 
 import pytest
 from mixer.backend.flask import mixer as _mixer
 
+BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+sys.path.append(str(BASE_DIR))
+
+
 try:
-    from shorts_app import app, db
-    from shorts_app.models import URL_map
+    from yacut import app, db
+    from yacut.models import URL_map
 except NameError:
     raise AssertionError('Не обнаружена константа с Flask приложением. Назовите ее app.')
 except ImportError as exc:

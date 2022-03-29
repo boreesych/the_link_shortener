@@ -1,6 +1,6 @@
-from shorts_app import db
+from yacut import db
 from sqlalchemy import inspect
-from shorts_app.models import URL_map
+from yacut.models import URL_map
 
 
 def test_fields(_app):

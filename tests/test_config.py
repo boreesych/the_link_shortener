@@ -1,5 +1,5 @@
 import os
-from shorts_app import app
+from yacut import app
 
 
 def test_config():
