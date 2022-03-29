@@ -4,9 +4,9 @@ from random import choice
 
 from flask import abort, flash, redirect, render_template, url_for
 
-from shorts_app import ID_LENGHT, app, db
-from shorts_app.forms import LinkForm
-from shorts_app.models import URL_map
+from yacut import ID_LENGHT, app, db
+from yacut.forms import LinkForm
+from yacut.models import URL_map
 
 
 def get_short_id(number):
