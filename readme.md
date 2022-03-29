@@ -33,7 +33,7 @@ pip install -r requirements.txt
 Создать в директории проекта файл .env с тремя переменными окружения:
 
 ```
-FLASK_APP=shorts_app
+FLASK_APP=yacut
 FLASK_ENV=development
 SECRET_KEY=your_secret_key
 ```
