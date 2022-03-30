@@ -36,7 +36,7 @@ def create_id():
         message = '"url" является обязательным полем!'
         raise Invalid_API_usage(message)
 
-    if short_id is None or short_id == '':
+    if not short_id:
         short_id = get_unique_short_id()
 
     new_link = URL_map(original=url, short=short_id, timestamp=datetime.now())
