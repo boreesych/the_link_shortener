@@ -8,7 +8,7 @@ def test_fields(_app):
         'Не обнаружена таблица URL_map'
     )
     inspector = inspect(URL_map)
-    fields =  [i.key for i in inspector.mapper.column_attrs]
+    fields = [i.key for i in inspector.mapper.column_attrs]
     assert all(field in ['id', 'original', 'short', 'timestamp'] for field in fields), (
         'Не обнаружено необходимое количество полей в модели. '
         'Необходимые поля: id, original, short, timestamp'

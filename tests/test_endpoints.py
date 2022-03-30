@@ -1,4 +1,3 @@
-from pprint import pprint as pp
 import pytest
 from yacut.models import URL_map
 

@@ -36,6 +36,7 @@ def test_duplicated_url_in_form(client, short_python_url):
         'отображаться текст "Имя <short_name> уже занято!"'
     )
 
+
 def test_get_unique_short_id(client):
     got = client.post('/', data={
         'original_link': 'https://www.python.org',

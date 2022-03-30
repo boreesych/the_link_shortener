@@ -11,8 +11,10 @@ class LinkForm(FlaskForm):
     custom_id = StringField(
         'Ваш вариант короткой ссылки',
         validators=[
-            Regexp('[a-zA-Z0-9]',
-            message='В вашем варианте короткой ссылки использованы недопустимые символы'),
+            Regexp(
+                '[a-zA-Z0-9]',
+                message='В вашем варианте короткой ссылки использованы недопустимые символы'
+            ),
             Optional(),
         ]
     )
