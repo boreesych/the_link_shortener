@@ -14,11 +14,11 @@ try:
     from yacut import app, db
     from yacut.models import URL_map
 except NameError:
-    raise AssertionError('Не обнаружена константа с Flask приложением. Назовите ее app.')
+    raise AssertionError('Не обнаружен экземпляр класса с Flask приложением. Назовите ее app.')
 except ImportError as exc:
     if any(obj in exc.name for obj in ['models', 'URL_map']):
         raise AssertionError('Не обнаружена модель URL_map в файле models')
-    raise AssertionError('Не обнаружена константа с SQLAlchemy. Назовите ее db.')
+    raise AssertionError('Не обнаружен экземпляр класса с SQLAlchemy. Назовите ее db.')
 
 
 @pytest.fixture
