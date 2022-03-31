@@ -4,7 +4,7 @@ from yacut.models import URL_map
 def test_index_form_get(client):
     got = client.get('/')
     assert got.status_code == 200
-    assert b"form" in got.data, (
+    assert b'form' in got.data, (
         'Добавьте форму в конекст страницы `index`'
     )
 

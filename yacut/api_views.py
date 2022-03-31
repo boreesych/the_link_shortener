@@ -23,7 +23,7 @@ def create_id():
         raise Invalid_API_usage('Отсутствует тело запроса')
 
     url = request.json.get('url')
-    short_id = request.json.get('short_link')
+    short_id = request.json.get('custom_id')
 
     if short_id and re.search(r'[^a-zA-Z0-9]', short_id):
         raise Invalid_API_usage('Указано недопустимое имя для короткой ссылки')
@@ -36,6 +36,7 @@ def create_id():
         message = '"url" является обязательным полем!'
         raise Invalid_API_usage(message)
 
+    # if short_id is None or short_id == '':
     if not short_id:
         short_id = get_unique_short_id()
 
