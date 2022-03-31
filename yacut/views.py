@@ -1,26 +1,25 @@
-import re
 import string
 from datetime import datetime
 from random import choice
 
 from flask import abort, flash, redirect, render_template, url_for
-from flask.helpers import get_flashed_messages
 
 from yacut import ID_LENGHT, app, db
 from yacut.forms import LinkForm
 from yacut.models import URL_map
 
-from . import error_handlers
-
 
 def get_short_id(number):
     generated_id = [
         choice(
-            string.ascii_lowercase + 
-            string.ascii_uppercase + 
-            string.digits) for _ in range(number)]
+            string.ascii_lowercase +
+            string.ascii_uppercase +
+            string.digits
+        ) for _ in range(number)
+    ]
     result = ''.join(generated_id)
     return result
+
 
 def get_unique_short_id():
     unique_id = False
@@ -31,7 +30,6 @@ def get_unique_short_id():
     return new_id
 
 
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = LinkForm()
@@ -39,8 +37,7 @@ def index():
         url = form.original_link.data
         short_id = form.custom_id.data
 
-        if (short_id 
-            and URL_map.query.filter_by(short=short_id).first() is not None):
+        if (short_id and URL_map.query.filter_by(short=short_id).first() is not None):
             flash(f'Имя {short_id} уже занято!')
             return redirect(url_for('index'))
 
