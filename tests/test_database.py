@@ -1,5 +1,6 @@
-from yacut import db
 from sqlalchemy import inspect
+
+from yacut import db
 from yacut.models import URL_map
 
 

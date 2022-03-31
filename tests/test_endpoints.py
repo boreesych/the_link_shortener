@@ -1,4 +1,5 @@
 import pytest
+
 from yacut.models import URL_map
 
 py_url = 'https://www.python.org'
@@ -7,7 +8,7 @@ py_url = 'https://www.python.org'
 def test_create_id(client):
     got = client.post('/api/id/', json={
         'url': py_url,
-        'short_link': 'py',
+        'custom_id': 'py',
     })
     assert got.status_code == 201, 'Статус ответа при создании короткой ссылки должен быть 201'
     assert list(got.json.keys()) == ['short_link', 'url'], (
@@ -39,7 +40,7 @@ def test_create_empty_body(client):
 def test_invalid_short_url(client):
     got = client.post('/api/id/', json={
         'url': py_url,
-        'short_link': '$',
+        'custom_id': '$',
     })
     assert got.status_code == 400, (
         'При недопустимом имени для короткой ссылки статус ответа должен быть 400'
@@ -60,7 +61,7 @@ def test_no_required_field(client):
         })
     except Exception:
         raise AssertionError(
-            'Вызывайте исключение при некорректном теле запроса для создании короткой ссылки'
+            'Вызывайте исключение при некорректном теле запроса для создании короткой ссылки',
         )
     assert got.status_code == 400, (
         'При некорректном теле запроса для создании короткой ссылки статус ответа должен быть 400'
@@ -78,11 +79,12 @@ def test_url_already_exists(client, short_python_url):
     try:
         got = client.post('/api/id/', json={
             'url': py_url,
-            'short_link': 'py',
+            'custom_id': 'py',
         })
     except Exception:
         raise AssertionError(
-            'Вызывайте исключение при попытке создания ссылки с коротким именем которое уже занято'
+            'Вызывайте исключение при попытке создания ссылки с ',
+            'коротким именем которое уже занято',
         )
     assert got.status_code == 400, (
         'При создании ссылки с коротким именем которое уже занято статус ответа должен быть 400'
@@ -97,8 +99,8 @@ def test_url_already_exists(client, short_python_url):
 
 
 @pytest.mark.parametrize('json_data', [
-    ({'url': py_url, 'short_link': None}),
-    ({'url': py_url, 'short_link': ''}),
+    ({'url': py_url, 'custom_id': None}),
+    ({'url': py_url, 'custom_id': ''}),
 ])
 def test_generated_unique_short_id(json_data, client):
     try:
@@ -106,7 +108,7 @@ def test_generated_unique_short_id(json_data, client):
     except Exception:
         raise AssertionError(
             'Генерируйте уникальный short_id для запроса в котором '
-            'short_list None или пустая строка.'
+            'short_list None или пустая строка.',
         )
     assert got.status_code == 201, (
         'Статус ответа при создании короткой ссылки '
