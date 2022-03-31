@@ -108,7 +108,7 @@ def test_generated_unique_short_id(json_data, client):
     except Exception:
         raise AssertionError(
             'Генерируйте уникальный short_id для запроса в котором '
-            'short_list None или пустая строка.',
+            'short_id отсутсвует или пустая строка.',
         )
     assert got.status_code == 201, (
         'Статус ответа при создании короткой ссылки '
