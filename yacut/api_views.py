@@ -31,6 +31,10 @@ def create_id():
     if short_id and URL_map.query.filter_by(short=short_id).first() is not None:
         message = f'Имя "{short_id}" уже занято.'
         raise Invalid_API_usage(message)
+    
+    if short_id and len(short_id) > 16:
+        message = 'custom_id не должен быть длиннее 16 символов'
+        raise Invalid_API_usage(message)
 
     if url is None:
         message = '"url" является обязательным полем!'

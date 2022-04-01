@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, URLField
-from wtforms.validators import DataRequired, Optional, Regexp
+from wtforms.validators import DataRequired, Optional, Regexp, Length
 
 
 class LinkForm(FlaskForm):
@@ -16,6 +16,7 @@ class LinkForm(FlaskForm):
                 message='В вашем варианте короткой ссылки использованы недопустимые'
                         ' символы',
             ),
-            Optional()
+            Optional(),
+            Length(max=16)
         ])
     submit = SubmitField('Создать')
