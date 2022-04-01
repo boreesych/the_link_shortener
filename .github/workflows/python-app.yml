@@ -32,7 +32,10 @@ jobs:
          pip install flake8 pytest
          pip install -r requirements.txt
    linter:
-     runs-on: ubuntu-latest
+     strategy:
+       matrix:
+         os: [ubuntu-latest, macos-latest, windows-latest]
+     runs-on: ${{ matrix.os }}
      needs: [ build ]
      steps:
      - uses: actions/checkout@v2
@@ -54,7 +57,10 @@ jobs:
          # exit-zero treats all errors as warnings
          flake8 yacut --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics
    test:
-     runs-on: ubuntu-latest
+     strategy:
+       matrix:
+         os: [ubuntu-latest, macos-latest, windows-latest]
+     runs-on: ${{ matrix.os }}
      needs: [ build ]
      steps:
      - uses: actions/checkout@v2
