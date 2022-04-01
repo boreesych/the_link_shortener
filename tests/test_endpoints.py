@@ -37,11 +37,14 @@ def test_create_empty_body(client):
     )
 
 
-def test_invalid_short_url(client):
-    got = client.post('/api/id/', json={
-        'url': py_url,
-        'custom_id': '$',
-    })
+@pytest.mark.parametrize('json_data', [
+    ({'url': py_url, 'custom_id': '.,/!?'}),
+    ({'url': py_url, 'custom_id': 'Hodor-Hodor'}),
+    ({'url': py_url, 'custom_id': 'h@k$r'}),
+    ({'url': py_url, 'custom_id': '$'}),
+])
+def test_invalid_short_url(json_data, client):
+    got = client.post('/api/id/', json=json_data)
     assert got.status_code == 400, (
         'При недопустимом имени для короткой ссылки статус ответа должен быть 400'
     )
@@ -51,6 +54,11 @@ def test_invalid_short_url(client):
     assert got.json == {'message': 'Указано недопустимое имя для короткой ссылки'}, (
         'Сообщение в теле ответа при недопустимом имени короткой ссылки '
         'в запросе не соответствует спецификации'
+    )
+    unique_id = URL_map.query.filter_by(original=py_url).first()
+    assert not unique_id, (
+        'При создании короткой ссылки с использованием запрещенных символов возникла ошибка. '
+        'Обратитесь к тексту задания'
     )
 
 
@@ -160,7 +168,7 @@ def test_get_url_not_fount(client):
 
 
 def test_len_short_id_api(client):
-    long_string = 'Любопытство-не-грех-Гарри-но-надо-быть-немного-терпеливее'
+    long_string = 'CuriosityisnotasinHarryHoweverfromtimetotimeyoushouldexercisecaution'
     got = client.post('/api/id/', json={
         'url': py_url,
         'custom_id': long_string,
@@ -173,7 +181,7 @@ def test_len_short_id_api(client):
         'При POST запросе в теле которого указана короткая ссылка более 16 символов '
         'в ответе должен быть ключ message'
     )
-    assert got.json == {'message': 'Указано недопустимое имя для короткой ссылки'}, (
+    assert got.json == {'message': 'custom_id не должен быть длиннее 16 символов'}, (
         'При POST запросе в теле которого указана короткая ссылка более 16 символов '
         'тело ответа не соответствует спецификации'
     )
