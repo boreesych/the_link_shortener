@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 
-from flask import abort, jsonify, make_response, request, url_for
+from flask import jsonify, request, url_for
 
 from yacut import app, db
 from yacut.error_handlers import Invalid_API_usage

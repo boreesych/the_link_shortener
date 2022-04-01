@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from settings import Config
 
+from settings import Config
 
 ID_LENGHT = 6
 
