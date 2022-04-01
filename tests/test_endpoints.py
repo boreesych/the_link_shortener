@@ -168,7 +168,7 @@ def test_get_url_not_fount(client):
 
 
 def test_len_short_id_api(client):
-    long_string = 'Любопытство-не-грех-Гарри-но-надо-быть-немного-терпеливее'
+    long_string = 'CuriosityisnotasinHarryHoweverfromtimetotimeyoushouldexercisecaution'
     got = client.post('/api/id/', json={
         'url': py_url,
         'custom_id': long_string,
@@ -181,7 +181,7 @@ def test_len_short_id_api(client):
         'При POST запросе в теле которого указана короткая ссылка более 16 символов '
         'в ответе должен быть ключ message'
     )
-    assert got.json == {'message': 'Указано недопустимое имя для короткой ссылки'}, (
+    assert got.json == {'message': 'custom_id не должен быть длиннее 16 символов'}, (
         'При POST запросе в теле которого указана короткая ссылка более 16 символов '
         'тело ответа не соответствует спецификации'
     )
