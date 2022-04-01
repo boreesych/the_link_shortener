@@ -22,8 +22,7 @@
                 placeholder=form.original_link.label.text) }}
               </div>
               <div>
-                {{ form.custom_id(class="form-control form-control-lg py-2 mb-3", placeholder=form.custom_id.label.text)
-                }}
+                {{ form.custom_id(class="form-control form-control-lg py-2 mb-3", placeholder=form.custom_id.label.text) }}
               </div>
               {{ form.submit(class="btn btn-primary") }}
             </div>
@@ -41,17 +40,16 @@
         <div class="col-sm">
           <p class="text-center">
             {% for field, error in form.errors.items() %}
-          <h5 class="text-center">{{ error[0] }}</h5>
-          {% endfor %}
+              <h5 class="text-center">{{ error[0] }}</h5>
+            {% endfor %}
 
-          {% for message in get_flashed_messages() %}
-          <h5 class="text-center">{{ message }}</h5>
-          {% endfor %}
+            {% for message in get_flashed_messages() %}
+              <h5 class="text-center">{{ message }}</h5>
+            {% endfor %}
 
-          {% if short_url %}
-          <h5 class="text-center">Ваша новая ссылка готова: <a href="{{ short_url }}" target="_blank">{{ short_url
-              }}</a></h5>
-          {% endif %}
+            {% if short_url %}
+              <h5 class="text-center">Ваша новая ссылка готова: <a href="{{ short_url }}" target="_blank">{{ short_url }}</a></h5>
+            {% endif %}
           </p>
         </div>
         <div class="col-sm">
