@@ -1,6 +1,4 @@
-import os
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -24,10 +22,9 @@ except ImportError as exc:
 
 
 @pytest.fixture
-def _app():
-    _, db_path = tempfile.mkstemp()
-    db_path = db_path + 'test_db.sqlite3'
-    db_uri = 'sqlite:///' + db_path
+def _app(tmp_path):
+    db_path = tmp_path / 'test_db.sqlite3'
+    db_uri = 'sqlite:///' + str(db_path)
     app.config.update({
         'TESTING': True,
         'SQLALCHEMY_DATABASE_URI': db_uri,
@@ -37,7 +34,8 @@ def _app():
         db.create_all()
     yield app
     db.drop_all()
-    os.unlink(db_path)
+    db_path.unlink()
+    
 
 
 @pytest.fixture
