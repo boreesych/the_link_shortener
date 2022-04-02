@@ -21,7 +21,7 @@ except ImportError as exc:
     raise AssertionError('Не обнаружен объект класса SQLAlchemy. Создайте его и назовите db.')
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture
 def _app(tmp_path):
     db_path = tmp_path / 'test_db.sqlite3'
     db_uri = 'sqlite:///' + str(db_path)
@@ -35,7 +35,6 @@ def _app(tmp_path):
     yield app
     db.drop_all()
     db_path.unlink()
-    
 
 
 @pytest.fixture
