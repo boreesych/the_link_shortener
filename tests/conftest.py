@@ -1,6 +1,4 @@
-import os
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -14,18 +12,19 @@ try:
     from yacut import app, db
     from yacut.models import URL_map
 except NameError:
-    raise AssertionError('Не обнаружен экземпляр класса с Flask приложением. Назовите ее app.')
+    raise AssertionError(
+        'Не обнаружен объект приложения. Создайте экземпляр класса Flask и назовите его app.',
+    )
 except ImportError as exc:
     if any(obj in exc.name for obj in ['models', 'URL_map']):
-        raise AssertionError('Не обнаружена модель URL_map в файле models')
-    raise AssertionError('Не обнаружен экземпляр класса с SQLAlchemy. Назовите ее db.')
+        raise AssertionError('В файле models не найдена модель URL_map')
+    raise AssertionError('Не обнаружен объект класса SQLAlchemy. Создайте его и назовите db.')
 
 
 @pytest.fixture
-def _app():
-    _, db_path = tempfile.mkstemp()
-    db_path = db_path + 'test_db.sqlite3'
-    db_uri = 'sqlite:///' + db_path
+def _app(tmp_path):
+    db_path = tmp_path / 'test_db.sqlite3'
+    db_uri = 'sqlite:///' + str(db_path)
     app.config.update({
         'TESTING': True,
         'SQLALCHEMY_DATABASE_URI': db_uri,
@@ -35,7 +34,7 @@ def _app():
         db.create_all()
     yield app
     db.drop_all()
-    os.unlink(db_path)
+    db_path.unlink()
 
 
 @pytest.fixture
