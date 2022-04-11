@@ -3,8 +3,10 @@ import os
 from yacut import app
 
 
-def test_env_vars():
-    assert 'DB' in os.environ, 'Добавьте переменную окружение DB'
+def test_env_vars(client):
+    assert 'sqlite:///db.sqlite3' in list(os.environ.values()), (
+        'Добавьте переменную окружение для базы данных со значением sqlite:///db.sqlite3'
+    )
 
 
 def test_config():
