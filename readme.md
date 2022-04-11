@@ -44,6 +44,7 @@ pip install -r requirements.txt
 FLASK_APP=yacut
 FLASK_ENV=development
 SECRET_KEY=your_secret_key
+DB=sqlite:///db.sqlite3
 ```
 
 Создать базу данных и применить миграции:
