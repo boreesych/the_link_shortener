@@ -13,7 +13,6 @@ def test_config(default_app):
         'Проверьте, что конфигурационному ключу SQLALCHEMY_DATABASE_URI '
         'присвоено значение с настройками для подключения базы данных'
     )
-    assert not default_app.config['SQLALCHEMY_TRACK_MODIFICATIONS']
     assert default_app.config['SECRET_KEY'] == os.getenv('SECRET_KEY'), (
         'Проверьте, что конфигурационному ключу SECRET_KEY '
         'присвоено значение')
