@@ -28,7 +28,7 @@ def create_id():
     if short_id and re.search(r'[^a-zA-Z0-9]', short_id):
         raise Invalid_API_usage('Указано недопустимое имя для короткой ссылки')
 
-    if short_id and URL_map.query.filter_by(short=short_id).first() is not None:
+    if short_id and URL_map.query.filter_by(short=short_id).first():
         message = f'Имя "{short_id}" уже занято.'
         raise Invalid_API_usage(message)
 

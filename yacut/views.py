@@ -37,7 +37,7 @@ def index():
 
         if (
             short_id and
-            URL_map.query.filter_by(short=short_id).first() is not None
+            URL_map.query.filter_by(short=short_id).first()
         ):
             flash(f'Имя {short_id} уже занято!')
             return redirect(url_for('index'))
