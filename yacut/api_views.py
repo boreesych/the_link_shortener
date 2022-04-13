@@ -3,10 +3,10 @@ from datetime import datetime
 
 from flask import jsonify, request, url_for
 
-from yacut import app, db
-from yacut.error_handlers import Invalid_API_usage
-from yacut.models import URL_map
-from yacut.views import get_unique_short_id
+from . import app, db
+from .error_handlers import Invalid_API_usage
+from .models import URL_map
+from .views import get_unique_short_id
 
 
 @app.route('/api/id/<short_id>/', methods=['GET'])

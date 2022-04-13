@@ -1,6 +1,6 @@
 from flask import jsonify, render_template
 
-from yacut import app, db
+from . import app, db
 
 
 class Invalid_API_usage(Exception):
