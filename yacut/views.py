@@ -17,11 +17,9 @@ def get_short_id(number):
 
 
 def get_unique_short_id():
-    unique_id = False
-    while not unique_id:
+    new_id = get_short_id(ID_LENGHT)
+    while URL_map.query.filter_by(short=new_id).first():
         new_id = get_short_id(ID_LENGHT)
-        if URL_map.query.filter_by(short=new_id).first() is None:
-            unique_id = True
     return new_id
 
 
