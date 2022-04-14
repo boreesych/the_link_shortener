@@ -1,10 +1,12 @@
+from http import HTTPStatus
+
 from flask import jsonify, render_template
 
 from . import app, db
 
 
 class Invalid_API_usage(Exception):
-    status_code = 400
+    status_code = HTTPStatus.BAD_REQUEST
 
     def __init__(self, message, status_code=None):
         super().__init__()
@@ -13,9 +15,7 @@ class Invalid_API_usage(Exception):
             self.status_code = status_code
 
     def to_dict(self):
-        data = {}
-        data['message'] = self.message
-        return data
+        return dict(message = self.message)
 
 
 @app.errorhandler(404)

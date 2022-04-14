@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from http import HTTPStatus
 
 from flask import jsonify, request, url_for
 
@@ -13,8 +14,11 @@ from .views import get_unique_short_id
 def get_url(short_id):
     link = URL_map.query.filter_by(short=short_id).first()
     if link:
-        return jsonify({'url': link.original}), 200
-    raise Invalid_API_usage('Указанный id не найден', status_code=404)
+        return jsonify({'url': link.original}), HTTPStatus.OK
+    raise Invalid_API_usage(
+        'Указанный id не найден', 
+        status_code=HTTPStatus.NOT_FOUND
+        )
 
 
 @app.route('/api/id/', methods=['POST'])
@@ -48,4 +52,4 @@ def create_id():
     db.session.commit()
     short_url = url_for('index', _external=True) + short_id
 
-    return jsonify({'url': url, 'short_link': short_url}), 201
+    return jsonify({'url': url, 'short_link': short_url}), HTTPStatus.CREATED
