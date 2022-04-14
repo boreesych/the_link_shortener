@@ -11,10 +11,8 @@ from .models import URL_map
 
 def get_short_id(number):
     generated_id = [
-        choice(
-            string.ascii_lowercase +
-            string.ascii_uppercase +
-            string.digits) for _ in range(number)]
+        choice(string.ascii_letters + string.digits) for _ in range(number)
+        ]
     result = ''.join(generated_id)
     return result
 
