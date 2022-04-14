@@ -2,7 +2,7 @@ import string
 from datetime import datetime
 from random import choice
 
-from flask import abort, flash, redirect, render_template, url_for
+from flask import flash, redirect, render_template, url_for
 
 from . import ID_LENGHT, app, db
 from .forms import LinkForm
