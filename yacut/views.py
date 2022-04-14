@@ -42,8 +42,11 @@ def index():
         if not short_id:
             short_id = get_unique_short_id()
 
-        new_link = URL_map(original=url, short=short_id,
-                           timestamp=datetime.now())
+        new_link = URL_map(
+            original=url, 
+            short=short_id,
+            timestamp=datetime.now()
+            )
         db.session.add(new_link)
         db.session.commit()
         short_url = url_for('index', _external=True) + short_id
