@@ -29,20 +29,17 @@ def create_id():
     url = request.json.get('url')
     short_id = request.json.get('custom_id')
 
+    if url is None:
+        raise Invalid_API_usage('"url" является обязательным полем!')
+
     if short_id and re.search(r'[^a-zA-Z0-9]', short_id):
         raise Invalid_API_usage('Указано недопустимое имя для короткой ссылки')
 
     if short_id and URL_map.query.filter_by(short=short_id).first():
-        message = f'Имя "{short_id}" уже занято.'
-        raise Invalid_API_usage(message)
+        raise Invalid_API_usage(f'Имя "{short_id}" уже занято.')
 
     if short_id and len(short_id) > 16:
-        message = 'custom_id не должен быть длиннее 16 символов'
-        raise Invalid_API_usage(message)
-
-    if url is None:
-        message = '"url" является обязательным полем!'
-        raise Invalid_API_usage(message)
+        raise Invalid_API_usage('custom_id не должен быть длиннее 16 символов')
 
     if not short_id:
         short_id = get_unique_short_id()
