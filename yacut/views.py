@@ -54,7 +54,5 @@ def index():
 
 @app.route('/<short_id>')
 def redirect_url(short_id):
-    link = URL_map.query.filter_by(short=short_id).first()
-    if link:
-        return redirect(link.original)
-    abort(404)
+    link = URL_map.query.filter_by(short=short_id).first_or_404()
+    return redirect(link.original)
