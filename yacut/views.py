@@ -12,7 +12,7 @@ from .models import URL_map
 def get_short_id(number):
     generated_id = [
         choice(string.ascii_letters + string.digits) for _ in range(number)
-        ]
+    ]
     return ''.join(generated_id)
 
 
@@ -41,10 +41,10 @@ def index():
             short_id = get_unique_short_id()
 
         new_link = URL_map(
-            original=url, 
+            original=url,
             short=short_id,
             timestamp=datetime.now()
-            )
+        )
         db.session.add(new_link)
         db.session.commit()
         short_url = url_for('index', _external=True) + short_id

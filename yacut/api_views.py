@@ -16,9 +16,9 @@ def get_url(short_id):
     if link:
         return jsonify({'url': link.original}), HTTPStatus.OK
     raise Invalid_API_usage(
-        'Указанный id не найден', 
+        'Указанный id не найден',
         status_code=HTTPStatus.NOT_FOUND
-        )
+    )
 
 
 @app.route('/api/id/', methods=['POST'])
