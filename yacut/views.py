@@ -35,7 +35,7 @@ def index():
             URL_map.query.filter_by(short=short_id).first()
         ):
             flash(f'Имя {short_id} уже занято!')
-            return redirect(url_for('index'))
+            return render_template('index.html', form=form)
 
         if not short_id:
             short_id = get_unique_short_id()
