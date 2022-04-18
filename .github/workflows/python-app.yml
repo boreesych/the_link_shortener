@@ -54,7 +54,7 @@ jobs:
         flake8 tests --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics
     - name: Run tests
       env: |
-        DB: sqlite:///db.sqlite3
+        DB: $ {{ secrets.DB }}
       run: |
         py.test
   coverage:
