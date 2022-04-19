@@ -13,17 +13,18 @@ from .views import get_unique_short_id
 @app.route('/api/id/<short_id>/', methods=['GET'])
 def get_url(short_id):
     link = URL_map.query.filter_by(short=short_id).first()
-    if link:
-        return jsonify({'url': link.original}), HTTPStatus.OK
-    raise Invalid_API_usage(
+    if link is None:
+        raise Invalid_API_usage(
         'Указанный id не найден',
         status_code=HTTPStatus.NOT_FOUND
     )
+    return jsonify({'url': link.original}), HTTPStatus.OK
+    
 
 
 @app.route('/api/id/', methods=['POST'])
 def create_id():
-    if not request.json:
+    if request.json is None:
         raise Invalid_API_usage('Отсутствует тело запроса')
 
     url = request.json.get('url')
@@ -35,7 +36,7 @@ def create_id():
     if short_id and (re.search(r'[^a-zA-Z0-9]', short_id) or len(short_id) > 16):
         raise Invalid_API_usage('Указано недопустимое имя для короткой ссылки')
 
-    if short_id and URL_map.query.filter_by(short=short_id).first():
+    if short_id and URL_map.query.filter_by(short=short_id).first() is not None:
         raise Invalid_API_usage(f'Имя "{short_id}" уже занято.')
 
     if not short_id:

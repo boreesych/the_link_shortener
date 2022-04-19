@@ -32,7 +32,7 @@ def index():
 
         if (
             short_id and
-            URL_map.query.filter_by(short=short_id).first()
+            URL_map.query.filter_by(short=short_id).first() is not None
         ):
             flash(f'Имя {short_id} уже занято!')
             return render_template('index.html', form=form)
