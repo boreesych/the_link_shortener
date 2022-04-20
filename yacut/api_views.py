@@ -33,10 +33,16 @@ def create_id():
     if url is None:
         raise Invalid_API_usage('"url" является обязательным полем!')
 
-    if short_id and (re.search(r'[^a-zA-Z0-9]', short_id) or len(short_id) > 16):
+    if (
+        short_id and 
+        (re.search(r'[^a-zA-Z0-9]', short_id) or len(short_id) > 16)
+    ):
         raise Invalid_API_usage('Указано недопустимое имя для короткой ссылки')
 
-    if short_id and URL_map.query.filter_by(short=short_id).first() is not None:
+    if (
+        short_id and 
+        URL_map.query.filter_by(short=short_id).first() is not None
+    ):
         raise Invalid_API_usage(f'Имя "{short_id}" уже занято.')
 
     if not short_id:
