@@ -26,12 +26,12 @@ def get_url(short_id):
 def create_id():
     if request.json is None:
         raise Invalid_API_usage('Отсутствует тело запроса')
+    
+    if 'url' not in request.json:
+        raise Invalid_API_usage('"url" является обязательным полем!')
 
     url = request.json.get('url')
     short_id = request.json.get('custom_id')
-
-    if url is None:
-        raise Invalid_API_usage('"url" является обязательным полем!')
 
     if (
         short_id and 
