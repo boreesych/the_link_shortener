@@ -12,4 +12,7 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+
+# Эта часть импортов должна быть тут, 
+# так как эти модули используют у себя экземпляры выше
 from . import api_views, views

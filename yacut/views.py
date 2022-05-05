@@ -8,7 +8,8 @@ from . import ID_LENGHT, app, db
 from .forms import LinkForm
 from .models import URL_map
 
-
+# Тут потенциально может быть всякая дичь, 
+# я придумал вот такой вариант, но возможно есть что-то изящнее
 def get_short_id(number):
     generated_id = [
         choice(string.ascii_letters + string.digits) for _ in range(number)
@@ -17,7 +18,10 @@ def get_short_id(number):
 
 
 def get_unique_short_id():
+    # Нужно предусмотреть возможность настройки изменения длины короткого 
+    # идентификатора и вынести например в константу или еще как-то
     new_id = get_short_id(ID_LENGHT)
+    # Нужно предусмотреть проверку на дубли при автогенерации
     while URL_map.query.filter_by(short=new_id).first():
         new_id = get_short_id(ID_LENGHT)
     return new_id
@@ -29,7 +33,7 @@ def index():
     if form.validate_on_submit():
         url = form.original_link.data
         short_id = form.custom_id.data
-
+        # На None нужно проверять через is not
         if (
             short_id and
             URL_map.query.filter_by(short=short_id).first() is not None
@@ -51,5 +55,7 @@ def index():
 
 @app.route('/<short_id>')
 def redirect_url(short_id):
+    # Студенты тут поголовно будут использовать abort(), 
+    # расскажите им про first_or_404()
     link = URL_map.query.filter_by(short=short_id).first_or_404()
     return redirect(link.original)
