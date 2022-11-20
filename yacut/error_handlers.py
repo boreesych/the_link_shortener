@@ -5,7 +5,7 @@ from flask import jsonify, render_template
 from . import app, db
 
 
-class Invalid_API_usage(Exception):
+class InvalidAPIUsage(Exception):
     status_code = HTTPStatus.BAD_REQUEST
 
     def __init__(self, message, status_code=None):
@@ -31,6 +31,6 @@ def internal_error(error):
     return render_template('500.html'), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-@app.errorhandler(Invalid_API_usage)
+@app.errorhandler(InvalidAPIUsage)
 def invalid_api_usage(error):
     return jsonify(error.to_dict()), error.status_code

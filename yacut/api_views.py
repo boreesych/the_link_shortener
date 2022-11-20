@@ -5,7 +5,7 @@ from http import HTTPStatus
 from flask import jsonify, request, url_for
 
 from . import app, db
-from .error_handlers import Invalid_API_usage
+from .error_handlers import InvalidAPIUsage
 from .models import URL_map
 from .views import get_unique_short_id
 
@@ -15,7 +15,7 @@ def get_url(short_id):
     link = URL_map.query.filter_by(short=short_id).first()
     # Проверить корректность сравнения с None и использование HTTPStatus
     if link is None:
-        raise Invalid_API_usage(
+        raise InvalidAPIUsage(
         'Указанный id не найден',
         status_code=HTTPStatus.NOT_FOUND
     )
@@ -26,10 +26,10 @@ def get_url(short_id):
 @app.route('/api/id/', methods=['POST'])
 def create_id():
     if request.json is None:
-        raise Invalid_API_usage('Отсутствует тело запроса')
+        raise InvalidAPIUsage('Отсутствует тело запроса')
     
     if 'url' not in request.json:
-        raise Invalid_API_usage('"url" является обязательным полем!')
+        raise InvalidAPIUsage('"url" является обязательным полем!')
 
     url = request.json.get('url')
     short_id = request.json.get('custom_id')
@@ -39,13 +39,13 @@ def create_id():
         short_id and 
         (re.search(r'[^a-zA-Z0-9]', short_id) or len(short_id) > 16)
     ):
-        raise Invalid_API_usage('Указано недопустимое имя для короткой ссылки')
+        raise InvalidAPIUsage('Указано недопустимое имя для короткой ссылки')
 
     if (
         short_id and 
         URL_map.query.filter_by(short=short_id).first() is not None
     ):
-        raise Invalid_API_usage(f'Имя "{short_id}" уже занято.')
+        raise InvalidAPIUsage(f'Имя "{short_id}" уже занято.')
 
     if not short_id:
         short_id = get_unique_short_id()
