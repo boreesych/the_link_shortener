@@ -6,7 +6,7 @@ from flask import flash, redirect, render_template, url_for
 
 from . import ID_LENGHT, app, db
 from .forms import LinkForm
-from .models import URL_map
+from .models import UrlMap
 
 # Тут потенциально может быть всякая дичь, 
 # я придумал вот такой вариант, но возможно есть что-то изящнее
@@ -22,7 +22,7 @@ def get_unique_short_id():
     # идентификатора и вынести например в константу или еще как-то
     new_id = get_short_id(ID_LENGHT)
     # Нужно предусмотреть проверку на дубли при автогенерации
-    while URL_map.query.filter_by(short=new_id).first():
+    while UrlMap.query.filter_by(short=new_id).first():
         new_id = get_short_id(ID_LENGHT)
     return new_id
 
@@ -36,7 +36,7 @@ def index():
         # На None нужно проверять через is not
         if (
             short_id and
-            URL_map.query.filter_by(short=short_id).first() is not None
+            UrlMap.query.filter_by(short=short_id).first() is not None
         ):
             flash(f'Имя {short_id} уже занято!')
             return render_template('index.html', form=form)
@@ -44,7 +44,7 @@ def index():
         if not short_id:
             short_id = get_unique_short_id()
 
-        new_link = URL_map(original=url, short=short_id)
+        new_link = UrlMap(original=url, short=short_id)
         db.session.add(new_link)
         db.session.commit()
         short_url = url_for('index', _external=True) + short_id
@@ -57,5 +57,5 @@ def index():
 def redirect_url(short_id):
     # Студенты тут поголовно будут использовать abort(), 
     # расскажите им про first_or_404()
-    link = URL_map.query.filter_by(short=short_id).first_or_404()
+    link = UrlMap.query.filter_by(short=short_id).first_or_404()
     return redirect(link.original)
