@@ -7,7 +7,9 @@ py_url = 'https://www.python.org'
 
 def test_index_form_get(client):
     got = client.get('/')
-    assert got.status_code == 200
+    assert got.status_code == 200, (
+        'GET-запрос к главной странице должен возвращать статус `200`.'
+    )
     assert b'form' in got.data, (
         'Добавьте форму в конекст страницы `index`'
     )
