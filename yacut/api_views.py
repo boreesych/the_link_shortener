@@ -6,13 +6,13 @@ from flask import jsonify, request, url_for
 
 from . import app, db
 from .error_handlers import InvalidAPIUsage
-from .models import UrlMap
+from .models import URLMap
 from .views import get_unique_short_id
 
 
 @app.route('/api/id/<short_id>/', methods=['GET'])
 def get_url(short_id):
-    link = UrlMap.query.filter_by(short=short_id).first()
+    link = URLMap.query.filter_by(short=short_id).first()
     # Проверить корректность сравнения с None и использование HTTPStatus
     if link is None:
         raise InvalidAPIUsage(
@@ -43,14 +43,14 @@ def create_id():
 
     if (
         short_id and 
-        UrlMap.query.filter_by(short=short_id).first() is not None
+        URLMap.query.filter_by(short=short_id).first() is not None
     ):
         raise InvalidAPIUsage(f'Имя "{short_id}" уже занято.')
 
     if not short_id:
         short_id = get_unique_short_id()
 
-    new_link = UrlMap(original=url, short=short_id)
+    new_link = URLMap(original=url, short=short_id)
     db.session.add(new_link)
     db.session.commit()
     short_url = url_for('index', _external=True) + short_id
