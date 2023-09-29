@@ -1,5 +1,4 @@
 import re
-from datetime import datetime
 from http import HTTPStatus
 
 from flask import jsonify, request, url_for
@@ -16,36 +15,37 @@ def get_url(short_id):
     # Проверить корректность сравнения с None и использование HTTPStatus
     if link is None:
         raise InvalidAPIUsage(
-        'Указанный id не найден',
-        status_code=HTTPStatus.NOT_FOUND
-    )
+            'Указанный id не найден',
+            status_code=HTTPStatus.NOT_FOUND
+        )
     return jsonify({'url': link.original}), HTTPStatus.OK
-    
 
 
 @app.route('/api/id/', methods=['POST'])
 def create_id():
-    if request.json is None:
+    if request.get_json(silent=True) is None:
         raise InvalidAPIUsage('Отсутствует тело запроса')
-    
+
     if 'url' not in request.json:
         raise InvalidAPIUsage('"url" является обязательным полем!')
 
     url = request.json.get('url')
     short_id = request.json.get('custom_id')
-    # Возможно стоит вынести эту проверку в отдельный валидатор, 
+    # Возможно стоит вынести эту проверку в отдельный валидатор,
     # так как есть дублирование во view-функции
     if (
-        short_id and 
+        short_id and
         (re.search(r'[^a-zA-Z0-9]', short_id) or len(short_id) > 16)
     ):
         raise InvalidAPIUsage('Указано недопустимое имя для короткой ссылки')
 
     if (
-        short_id and 
+        short_id and
         URLMap.query.filter_by(short=short_id).first() is not None
     ):
-        raise InvalidAPIUsage(f'Имя "{short_id}" уже занято.')
+        raise InvalidAPIUsage(
+            'Предложенный вариант короткой ссылки уже существует.'
+        )
 
     if not short_id:
         short_id = get_unique_short_id()

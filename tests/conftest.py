@@ -1,27 +1,44 @@
+import os
 import sys
 from pathlib import Path
 
 import pytest
 from dotenv import load_dotenv
-from mixer.backend.flask import mixer as _mixer
 
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 sys.path.append(str(BASE_DIR))
 
+_user_environment = os.environ.copy()
+_tmp_db_uri = 'sqlite:///:memory:'
+os.environ['DATABASE_URI'] = _tmp_db_uri
 
 try:
     from yacut import app, db
-    from yacut.models import URLMap
-except NameError:
+    from yacut.models import URLMap  # noqa
+except NameError as exc:
     raise AssertionError(
-        'Не обнаружен объект приложения. Создайте экземпляр класса Flask и назовите его app.',
+        'При попытке импорта объекта приложения вознакло исключение: '
+        f'`{type(exc).__name__}: {exc}`'
     )
 except ImportError as exc:
     if any(obj in exc.name for obj in ['models', 'URLMap']):
-        raise AssertionError('В файле models не найдена модель URLMap')
-    raise AssertionError('Не обнаружен объект класса SQLAlchemy. Создайте его и назовите db.')
+        raise AssertionError('В файле `models` не найдена модель `URLMap`.')
+    raise AssertionError(
+        'При попытке запуска приложения вознакло исключение: '
+        f'`{type(exc).__name__}: {exc}`'
+    )
+
+
+@pytest.fixture
+def user_environment():
+    return _user_environment
+
+
+@pytest.fixture
+def tmp_db_uri():
+    return _tmp_db_uri
 
 
 @pytest.fixture
@@ -31,20 +48,16 @@ def default_app():
 
 
 @pytest.fixture
-def _app(tmp_path):
-    db_path = tmp_path / 'test_db.sqlite3'
-    db_uri = 'sqlite:///' + str(db_path)
+def _app():
     app.config.update({
         'TESTING': True,
-        'SQLALCHEMY_DATABASE_URI': db_uri,
         'WTF_CSRF_ENABLED': False,
     })
     with app.app_context():
         db.create_all()
-    yield app
-    db.drop_all()
-    db.session.close()
-    db_path.unlink()
+        yield app
+        db.drop_all()
+        db.session.close()
 
 
 @pytest.fixture
@@ -58,11 +71,13 @@ def cli_runner():
 
 
 @pytest.fixture
-def mixer():
-    _mixer.init_app(app)
-    return _mixer
+def short_python_url():
+    url_map_object = URLMap(original='https://www.python.org', short='py')
+    db.session.add(url_map_object)
+    db.session.commit()
+    return url_map_object
 
 
-@pytest.fixture
-def short_python_url(mixer):
-    return mixer.blend(URLMap, original='https://www.python.org', short='py')
+@pytest.fixture(scope='session')
+def duplicated_custom_id_msg():
+    return 'Предложенный вариант короткой ссылки уже существует.'
