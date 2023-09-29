@@ -37,19 +37,15 @@ def test_create_id(client):
 
 
 def test_create_empty_body(client):
-    try:
-        response = client.post(CREATE_SHORT_LINK_URL,
-                               content_type='application/json')
-    except Exception as exc:
-        raise AssertionError(
-            f'POST-запрос к эндпоинту `{CREATE_SHORT_LINK_URL}` с пустым '
-            f'телом вызывает исключение: `{type(exc).__name__}: {exc}`.\n'
-            'Обработайте исключение и верните ответ со статус-кодом '
-            f'{HTTPStatus.BAD_REQUEST.value}.'
-        )
+    response = client.post(CREATE_SHORT_LINK_URL,
+                           content_type='application/json')
     assert response.status_code == HTTPStatus.BAD_REQUEST, (
         f'В ответ на пустой POST-запрос к эндпоинту `{CREATE_SHORT_LINK_URL}` '
         f'должен вернуться ответ статус-кодом {HTTPStatus.BAD_REQUEST.value}.'
+    )
+    assert response.json, (
+        f'Ответ на POST-запрос к эндпоинту `{CREATE_SHORT_LINK_URL}`, '
+        'не содержащий тело запроса, должен быть быть в формате JSON.'
     )
     expected_response = {VALIDATION_ERROR_KEY: 'Отсутствует тело запроса'}
     assert response.json.keys() == expected_response.keys(), (
