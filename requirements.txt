@@ -9,4 +9,5 @@ pytest-env==0.6.2
 python-dateutil==2.8.
 python-dotenv==0.19.2
 sqlalchemy==2.0.20
+werkzeug==2.3.7
 wtforms==3.0.1
