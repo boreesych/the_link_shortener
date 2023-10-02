@@ -45,7 +45,9 @@ def create_id():
         short_id and 
         URLMap.query.filter_by(short=short_id).first() is not None
     ):
-        raise InvalidAPIUsage(f'Имя "{short_id}" уже занято.')
+        raise InvalidAPIUsage(
+            'Предложенный вариант короткой ссылки уже существует.'
+        )
 
     if not short_id:
         short_id = get_unique_short_id()
