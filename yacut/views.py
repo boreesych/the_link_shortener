@@ -38,7 +38,7 @@ def index():
             short_id and
             URLMap.query.filter_by(short=short_id).first() is not None
         ):
-            flash(f'Имя {short_id} уже занято!')
+            flash(f'Предложенный вариант короткой ссылки уже существует.')
             return render_template('index.html', form=form)
 
         if not short_id:
