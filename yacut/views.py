@@ -1,5 +1,4 @@
 import string
-from datetime import datetime
 from random import choice
 
 from flask import flash, redirect, render_template, url_for
@@ -8,7 +7,8 @@ from . import ID_LENGHT, app, db
 from .forms import LinkForm
 from .models import URLMap
 
-# Тут потенциально может быть всякая дичь, 
+
+# Тут потенциально может быть всякая дичь,
 # я придумал вот такой вариант, но возможно есть что-то изящнее
 def get_short_id(number):
     generated_id = [
@@ -18,7 +18,7 @@ def get_short_id(number):
 
 
 def get_unique_short_id():
-    # Нужно предусмотреть возможность настройки изменения длины короткого 
+    # Нужно предусмотреть возможность настройки изменения длины короткого
     # идентификатора и вынести например в константу или еще как-то
     new_id = get_short_id(ID_LENGHT)
     # Нужно предусмотреть проверку на дубли при автогенерации
@@ -38,7 +38,7 @@ def index():
             short_id and
             URLMap.query.filter_by(short=short_id).first() is not None
         ):
-            flash(f'Предложенный вариант короткой ссылки уже существует.')
+            flash('Предложенный вариант короткой ссылки уже существует.')
             return render_template('index.html', form=form)
 
         if not short_id:
@@ -55,7 +55,7 @@ def index():
 
 @app.route('/<short_id>')
 def redirect_url(short_id):
-    # Студенты тут поголовно будут использовать abort(), 
+    # Студенты тут поголовно будут использовать abort(),
     # расскажите им про first_or_404()
     link = URLMap.query.filter_by(short=short_id).first_or_404()
     return redirect(link.original)

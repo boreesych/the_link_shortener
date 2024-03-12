@@ -20,7 +20,7 @@ class InvalidAPIUsage(Exception):
 
 @app.errorhandler(404)
 def page_not_found(error):
-    # Студенты будут хардкодить коды ответа цифрами, 
+    # Студенты будут хардкодить коды ответа цифрами,
     # стоит им напомнить про HTTPStatus
     return render_template('404.html'), HTTPStatus.NOT_FOUND
 
