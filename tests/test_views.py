@@ -126,7 +126,9 @@ def test_len_short_id_form(client):
         )
     )
     posible_link = f'<a href="{TEST_BASE_URL}/long_custom_id"'
-    assert posible_link not in re.sub("'", '"', response.data.decode('utf-8')), (
+    assert (
+        posible_link not in re.sub("'", '"', response.data.decode('utf-8'))
+    ), (
         assert_msg_pattern.format(
             'короткая ссылка не должна отобразиться на главной странице'
         )

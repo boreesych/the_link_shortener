@@ -30,15 +30,16 @@ except ImportError as exc:
         f'`{type(exc).__name__}: {exc}`'
     )
 
+assert app.config['SQLALCHEMY_DATABASE_URI'] == _tmp_db_uri, (
+    'Проверьте, что конфигурационному ключу `SQLALCHEMY_DATABASE_URI` '
+    'присвоено значение с настройками для подключения базы данных с '
+    'использованием переменной окружения `DATABASE_URI`.'
+)
+
 
 @pytest.fixture
 def user_environment():
     return _user_environment
-
-
-@pytest.fixture
-def tmp_db_uri():
-    return _tmp_db_uri
 
 
 @pytest.fixture
