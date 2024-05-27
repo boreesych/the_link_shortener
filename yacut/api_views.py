@@ -1,5 +1,4 @@
 import re
-# from datetime import datetime
 from http import HTTPStatus
 
 from flask import jsonify, request, url_for
@@ -24,14 +23,18 @@ def get_url(short_id):
 
 @app.route('/api/id/', methods=['POST'])
 def create_id():
-    if request.json is None:
+    # `request.json` вызывает `.get_json()` с дефолтными параметрами, в том
+    # числе `silent=False`. Если тела запроса не окажется в запросе, то
+    # автоматически вернется ответ с кодом 400 в виде HTML.
+    json_body = request.get_json(silent=True)
+    if json_body is None:
         raise InvalidAPIUsage('Отсутствует тело запроса')
 
-    if 'url' not in request.json:
+    if 'url' not in json_body:
         raise InvalidAPIUsage('"url" является обязательным полем!')
 
-    url = request.json.get('url')
-    short_id = request.json.get('custom_id')
+    url = json_body.get('url')
+    short_id = json_body.get('custom_id')
     # Возможно стоит вынести эту проверку в отдельный валидатор,
     # так как есть дублирование во view-функции
     if (
