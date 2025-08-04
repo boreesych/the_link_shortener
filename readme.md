@@ -1,60 +1,44 @@
-### Как запустить проект Yacut:
+### How to Run the Project
 
-Клонировать репозиторий и перейти в него в командной строке:
-
-```
-git clone 
-```
-
-```
-cd yacut
-```
-
-Cоздать и активировать виртуальное окружение:
-
-```
-python3 -m venv venv
-```
-
-* Если у вас Linux/macOS
-
+1. **Clone the repository and navigate to the project directory:**
     ```
-    source venv/bin/activate
+    git clone <repository_url>
+    cd the_link_shortener
     ```
 
-* Если у вас windows
-
+2. **Create and activate a virtual environment:**
     ```
-    source venv/scripts/activate
+    python3 -m venv venv
+    ```
+    - On Linux/macOS:
+        ```
+        source venv/bin/activate
+        ```
+    - On Windows:
+        ```
+        source venv/scripts/activate
+        ```
+
+3. **Upgrade pip and install dependencies:**
+    ```
+    python3 -m pip install --upgrade pip
+    pip install -r requirements.txt
     ```
 
-Установить зависимости из файла requirements.txt:
+4. **Create a `.env` file in the project directory with the following content:**
+    ```
+    FLASK_APP=yacut
+    FLASK_ENV=development
+    SECRET_KEY=your_secret_key
+    DB=sqlite:///db.sqlite3
+    ```
 
-```
-python3 -m pip install --upgrade pip
-```
+5. **Initialize the database and apply migrations:**
+    ```
+    flask db upgrade
+    ```
 
-```
-pip install -r requirements.txt
-```
-
-Создать в директории проекта файл .env с четыремя переменными окружения:
-
-```
-FLASK_APP=yacut
-FLASK_ENV=development
-SECRET_KEY=your_secret_key
-DB=sqlite:///db.sqlite3
-```
-
-Создать базу данных и применить миграции:
-
-```
-flask db upgrade
-```
-
-Запустить проект:
-
-```
-flask run
-```
+6. **Run the project:**
+    ```
+    flask run
+    ```
