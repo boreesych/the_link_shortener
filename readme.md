@@ -1,3 +1,8 @@
+This is a simple web-based URL shortener built using Python and the Flask web framework. Users can input long URLs and receive short, shareable links that redirect to the original address.
+
+This project is an example of a final assignment for students learning the basics of Python and web development.
+It introduces key backend concepts such as routing, form handling, HTTP methods, and data storage using Flask.
+
 ### How to Run the Project
 
 1. **Clone the repository and navigate to the project directory:**
